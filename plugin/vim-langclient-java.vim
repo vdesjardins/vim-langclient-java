@@ -13,7 +13,7 @@ if !exists("g:langclient_java_docker_image")
 endif
 
 function! s:StartJavaLSP()
-  let s:server_cmd = [ 'docker', 'run', '-i', '--rm', '-v', '/etc/localtime:/etc/localtime', '-v', getcwd() . ':' . getcwd() .':rw', 'langclient-java' ]
+  let s:server_cmd = [ 'docker', 'run', '-i', '--rm', '-v', '/etc/localtime:/etc/localtime', '-v', getcwd() . ':' . getcwd() .':rw', g:langclient_java_docker_image ]
 
   let g:LanguageClient_serverCommands["java"] = s:server_cmd
 
