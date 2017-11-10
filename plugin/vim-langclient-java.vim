@@ -22,7 +22,21 @@ endfunction
 
 command! StartJavaLSP :call s:StartJavaLSP()
 
-if exists('g:langclient_java_autostart') && g:langclient_java_autostart == 1
-  autocmd BufReadPost *.java call s:StartJavaLSP()
-endif
+function! s:StopJavaLSP()
+  execute 'LanguageClientStop'
+  sleep 100m
+endfunction
 
+command! StopJavaLSP :call s:StopJavaLSP()
+
+augroup langclient_java
+  autocmd!
+
+  " need this because name pipes aren't closed and docker
+  " does not pick up that the parent process is not at the other end.
+  autocmd VimLeavePre * call s:StopJavaLSP()
+
+  if exists('g:langclient_java_autostart') && g:langclient_java_autostart == 1
+    autocmd BufReadPost *.java call s:StartJavaLSP()
+  endif
+augroup END
