@@ -9,7 +9,7 @@ if !exists("g:LanguageClient_serverCommands")
 endif
 
 if !exists("g:langclient_java_docker_image")
-  let g:langclient_java_docker_image = 'vdesjardins/langclient-java'
+  let g:langclient_java_docker_image = 'vdesjardins/langclient-java:v0.8.0'
 endif
 
 function! s:StartJavaLSP()
