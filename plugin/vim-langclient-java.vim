@@ -12,11 +12,20 @@ if !exists("g:langclient_java_docker_image")
   let g:langclient_java_docker_image = 'vdesjardins/langclient-java:v0.8.0'
 endif
 
+if !exists("g:langclient_java_maven_home")
+  let g:langclient_java_maven_home = resolve(expand("~/.m2"))
+endif
+
 function! s:StartJavaLSP()
   let l:uid = system("id -u")
   let l:gid = system("id -g")
 
-  let s:server_cmd = [ 'docker', 'run', '-i', '--rm', '-e', 'EUID=' . l:uid, '-e', 'EGID=' . l:gid, '-v', '/etc/localtime:/etc/localtime', '-v', getcwd() . ':' . getcwd() .':rw', g:langclient_java_docker_image ]
+  let s:server_cmd = [ 'docker', 'run', '-i', '--rm',
+      \ '-e', 'EUID=' . l:uid, '-e', 'EGID=' . l:gid,
+      \ '-v', '/etc/localtime:/etc/localtime',
+      \ '-v', getcwd() . ':' . getcwd() .':rw',
+      \ '-v', g:langclient_java_maven_home . ':/home/dev/.m2:rw',
+      \ g:langclient_java_docker_image ]
 
   let g:LanguageClient_serverCommands["java"] = s:server_cmd
 
